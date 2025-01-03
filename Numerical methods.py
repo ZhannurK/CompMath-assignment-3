@@ -4,15 +4,14 @@ def refine_inverse(A, B, max_iterations=10, tolerance=1e-6):
     """
     Refines an approximate inverse B of matrix A using the iterative method.
     """
-    global error_norm
-    I = np.eye(A.shape[0])  # Identity matrix
+    I = np.eye(A.shape[0])
     for iteration in range(max_iterations):
-        E = np.dot(A, B) - I  # Compute the error matrix E = AB - I
+        E = np.dot(A, B) - I
         error_norm = np.linalg.norm(E, ord='fro')
-        if error_norm < tolerance:  # Check convergence
+        if error_norm < tolerance:
             print(f"Iterative method converged after {iteration} iterations.")
             return B
-        B = np.dot(B, I - E)  # Update B
+        B = np.dot(B, I - E)
     print(f"Iterative method reached maximum iterations with error norm {error_norm:.2e}")
     return B
 
@@ -39,13 +38,13 @@ def invert_matrix(A):
     """
     L, U = lu_factorization(A)
     n = A.shape[0]
-    # Invert L
+
     L_inv = np.zeros_like(L)
     for i in range(n):
         L_inv[i, i] = 1 / L[i, i]
         for j in range(i):
             L_inv[i, j] = -sum(L[i, k] * L_inv[k, j] for k in range(j, i)) / L[i, i]
-    # Invert U
+
     U_inv = np.zeros_like(U)
     for i in range(n - 1, -1, -1):
         U_inv[i, i] = 1 / U[i, i]
@@ -101,7 +100,7 @@ def jacobi_method(A, tolerance=1e-6, max_iterations=100):
     eigenvalues = np.diag(A)
     return eigenvalues, V
 
-if __name__ == "__main__":
+def main_function():
     A = np.array([[4, 1, 2], [1, 3, 5], [2, 5, 6]], dtype=float)
 
     print("Iterative Method:")
@@ -125,3 +124,5 @@ if __name__ == "__main__":
     eigenvalues, eigenvectors = jacobi_method(A)
     print("Eigenvalues:\n", eigenvalues)
     print("Eigenvectors:\n", eigenvectors)
+
+main_function()
